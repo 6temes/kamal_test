@@ -114,6 +114,13 @@ GEM
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    good_job (4.11.2)
+      activejob (>= 6.1.0)
+      activerecord (>= 6.1.0)
+      concurrent-ruby (>= 1.3.1)
+      fugit (>= 1.11.0)
+      railties (>= 6.1.0)
+      thor (>= 1.0.0)
     groupdate (6.7.0)
       activesupport (>= 7.1)
     i18n (1.14.7)
@@ -157,16 +164,6 @@ GEM
     matrix (0.4.3)
     mini_mime (1.1.5)
     minitest (5.25.5)
-    mission_control-jobs (1.1.0)
-      actioncable (>= 7.1)
-      actionpack (>= 7.1)
-      activejob (>= 7.1)
-      activerecord (>= 7.1)
-      importmap-rails (>= 1.2.1)
-      irb (~> 1.13)
-      railties (>= 7.1)
-      stimulus-rails
-      turbo-rails
     msgpack (1.8.0)
     net-imap (0.5.9)
       date
@@ -322,13 +319,6 @@ GEM
       groupdate (>= 6.5)
       pagy (>= 6.0)
       solid_cache (>= 0.2.0)
-    solid_queue (1.2.1)
-      activejob (>= 7.1)
-      activerecord (>= 7.1)
-      concurrent-ruby (>= 1.3.1)
-      fugit (~> 1.11.0)
-      railties (>= 7.1)
-      thor (>= 1.3.1)
     sshkit (1.24.0)
       base64
       logger
@@ -385,10 +375,10 @@ DEPENDENCIES
   brakeman
   capybara
   debug
+  good_job (~> 4.0)
   importmap-rails
   jbuilder
   kamal
-  mission_control-jobs
   pg (~> 1.1)
   propshaft
   puma (>= 5.0)
@@ -398,7 +388,6 @@ DEPENDENCIES
   solid_cable
   solid_cache
   solid_cache_dashboard
-  solid_queue
   stimulus-rails
   thruster
   turbo-rails
