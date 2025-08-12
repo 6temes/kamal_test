@@ -1,0 +1,39 @@
+#cloud-config
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - apparmor-utils
+  - curl
+  - docker-compose
+  - docker.io
+  - git
+  - locales-all
+  - ufw
+  - wget
+
+write_files:
+  - path: /etc/ssh/sshd_config.d/99-custom.conf
+    content: |
+      Port 54022
+      PermitRootLogin no
+      PasswordAuthentication no
+      PubkeyAuthentication yes
+
+runcmd:
+  # Enable and start Docker
+  - systemctl enable docker
+  - systemctl start docker
+  - usermod -aG docker admin
+  
+  # Configure SSH
+  - systemctl restart sshd
+  
+  # Configure UFW firewall
+  - ufw allow 54022/tcp
+  - ufw allow 80/tcp
+  - ufw allow 443/tcp
+  - ufw --force enable
+
+final_message: "Server setup complete. SSH on port 54022, Docker installed and admin user configured."

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/Users/d.lopez/Code/kamal/kamal_test/bin/generate-deploy-config:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

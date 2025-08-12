@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+echo "🔧 Generating deploy.yml from Terraform outputs..."
+
+# Check if terraform directory exists
+if [ ! -d "infra" ]; then
+    echo "❌ Error: infra directory not found. Please run terraform apply first."
+    exit 1
+fi
+
+echo "📡 Fetching Terraform outputs..."
+
+# Change to terraform directory and get outputs
+cd infra
+
+# Get output values
+SERVER_PUBLIC_IP=$(terraform output -raw server_ip 2>/dev/null)
+APP_URL=$(terraform output -raw app_url 2>/dev/null)
+APP_HOSTNAME=$(echo $APP_URL | sed 's|https://||')
+
+cd ..
+
+# Check if we got the required outputs
+if [ -z "$SERVER_PUBLIC_IP" ] || [ -z "$APP_URL" ]; then
+    echo "❌ Error: Could not retrieve all required Terraform outputs."
+    echo "   Make sure you have run 'terraform apply' in the infra directory."
+    exit 1
+fi
+
+echo "✅ Retrieved configuration:"
+echo "   Web server: $SERVER_PUBLIC_IP"
+echo "   App URL: $APP_URL"
+
+echo "📝 Generating config/deploy.yml from template..."
+
+# Generate the deploy.yml file from template
+export SERVER_PUBLIC_IP APP_HOSTNAME
+envsubst < config/deploy.yml.tpl > config/deploy.yml
+
+echo "✅ Successfully generated config/deploy.yml"
+echo ""
+echo "🚀 You can now run: kamal deploy -c config/deploy.yml"
