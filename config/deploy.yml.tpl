@@ -97,8 +97,8 @@ accessories:
   db:
     image: postgres:17
     host: ${SERVER_PUBLIC_IP}
-    # Only expose PostgreSQL locally to prevent external access
-    port: "127.0.0.1:5432:5432"
+    ports:
+      - "127.0.0.1:5432:5432" # Allow TablePlus to connect using the port on the host.
     env:
       clear:
         POSTGRES_DB: kamal_test_pg_production
@@ -107,9 +107,3 @@ accessories:
         - POSTGRES_PASSWORD
     directories:
       - data:/var/lib/postgresql/data
-  # redis:
-  #   image: redis:7.0
-  #   host: ${SERVER_PUBLIC_IP}
-  #   port: 6379
-  #   directories:
-  #     - data:/data

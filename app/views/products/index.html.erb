@@ -4,13 +4,19 @@
 
 <h1>Products</h1>
 
+<%= turbo_stream_from "products" %>
+
 <div id="products">
   <% @products.each do |product| %>
-    <%= render product %>
-    <p>
-      <%= link_to "Show this product", product %>
-    </p>
+    <div class="product-item">
+      <%= render product %>
+      <p>
+        <%= link_to "Show", product %>
+        <%= link_to "Edit", edit_product_path(product) %>
+        <%= link_to "Delete", product, data: { "turbo-method": :delete, "turbo-confirm": "Are you sure?" } %>
+      </p>
+    </div>
   <% end %>
 </div>
 
-<%= link_to "New product", new_product_path %>
+<%= link_to "New product", new_product_path, id: "new-product-link", data: { turbo_permanent: true } %>

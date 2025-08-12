@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(kamal deploy:*)",
+      "Bash(kamal accessory:*)",
+      "Bash(/Users/d.lopez/Code/kamal/kamal_test_pg/bin/generate-deploy-config:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
