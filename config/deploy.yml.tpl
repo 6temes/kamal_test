@@ -107,74 +107,13 @@ accessories:
     directories:
       - data:/var/lib/postgresql/data
 
-  loki:
-    image: grafana/loki:2.9.0
-    host: ${SERVER_PUBLIC_IP}
-    port: 3100
-    files:
-      - config/loki.yml:/etc/loki.yml
-    volumes:
-      - loki-data:/loki
-    cmd: -config.file=/etc/loki.yml
-    options:
-      cpus: 1.2
-      memory: 1g
-
-  prometheus:
-    image: prom/prometheus:v3.4.1
-    host: ${SERVER_PUBLIC_IP}
-    proxy:
-      host: prometheus.${APP_HOSTNAME}
-      ssl: true
-      app_port: 9090
-      healthcheck:
-        path: /-/ready
-        interval: 3
-        timeout: 2
-    volumes:
-      - "prometheus:/etc/prometheus"
-    files:
-      - config/prometheus.yml:/etc/prometheus.yml
-    cmd: --config.file=/etc/prometheus.yml --web.external-url=https://prometheus.${APP_HOSTNAME}/
-    options:
-      cpus: 1.2
-      memory: 1g
-
-  grafana:
-    image: grafana/grafana:12.0.1
-    host: ${SERVER_PUBLIC_IP}
-    proxy:
-      host: grafana.${APP_HOSTNAME}
-      ssl: true
-      app_port: 3000
-      healthcheck:
-        path: /login
-        interval: 3
-        timeout: 2
-    env:
-      clear:
-        GF_SERVER_DOMAIN: grafana.${APP_HOSTNAME}
-        GF_SERVER_ROOT_URL: "https://grafana.${APP_HOSTNAME}/"
-        GF_SERVER_SERVE_FROM_SUB_PATH: "false"
-    volumes:
-      - "grafana:/var/lib/grafana"
-    options:
-      cpus: 1.2
-      memory: 1g
-
-  node_exporter:
-    image: prom/node-exporter:v1.9.1
-    hosts: 
-      - ${SERVER_PUBLIC_IP}
-    port: 9100:9100
-    network: host
-    directories:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    cmd: "--path.procfs=/host/proc --path.sysfs=/host/sys --path.rootfs=/rootfs --collector.processes --collector.cpu --collector.meminfo --collector.filesystem.mount-points-exclude='^/(sys|proc|dev|host|etc)($$|/)'"
-    options:
-      pid: "host"
-      cpus: 0.5
-      memory: 0.5g
+# Configure Papertrail logging
+# You'll need to replace PAPERTRAIL_HOST and PAPERTRAIL_PORT with your actual Papertrail endpoint
+# Get these from your Papertrail account at https://papertrailapp.com/account/destinations
+logging:
+  driver: syslog
+  options:
+    syslog-address: "udp://logs.papertrailapp.com:XXXXX" # Replace with your Papertrail endpoint
+    tag: "{{.Name}}/{{.ImageName}}"
+    syslog-format: rfc3164
 

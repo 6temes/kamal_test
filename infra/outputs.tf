@@ -23,14 +23,4 @@ output "app_url" {
   value       = "https://${var.app_subdomain}.${var.domain_name}"
 }
 
-output "grafana_url" {
-  description = "Grafana URL"
-  value       = "https://grafana.${var.app_subdomain}.${var.domain_name}"
-}
-
-output "prometheus_url" {
-  description = "Prometheus URL"
-  value       = "https://prometheus.${var.app_subdomain}.${var.domain_name}"
-}
-
 

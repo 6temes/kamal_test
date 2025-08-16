@@ -52,8 +52,5 @@ export SERVER_PUBLIC_IP APP_HOSTNAME
 envsubst < config/deploy.yml.tpl > config/deploy.yml
 echo "✅ Successfully generated config/deploy.yml"
 
-envsubst < config/loki.yml.tpl > config/loki.yml
-echo "✅ Successfully generated config/loki.yml"
-
 echo ""
 echo "🚀 You can now run: kamal deploy -c config/deploy.yml"
