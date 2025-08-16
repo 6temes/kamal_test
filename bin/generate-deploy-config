@@ -16,18 +16,30 @@ echo "📡 Fetching Terraform outputs..."
 cd infra
 
 # Get output values
-SERVER_PUBLIC_IP=$(terraform output -raw server_ip 2>/dev/null)
-APP_URL=$(terraform output -raw app_url 2>/dev/null)
-APP_HOSTNAME=$(echo $APP_URL | sed 's|https://||')
+SERVER_PUBLIC_IP=$(terraform output -raw server_ip 2>&1)
+APP_URL=$(terraform output -raw app_url 2>&1)
 
 cd ..
 
-# Check if we got the required outputs
+# Strip ANSI color codes for checking
+SERVER_IP_CLEAN=$(echo "$SERVER_PUBLIC_IP" | sed 's/\x1b\[[0-9;]*m//g')
+APP_URL_CLEAN=$(echo "$APP_URL" | sed 's/\x1b\[[0-9;]*m//g')
+
+# Check if outputs contain the warning message about no outputs
+if [[ "$SERVER_IP_CLEAN" == *"Warning: No outputs found"* ]] || [[ "$APP_URL_CLEAN" == *"Warning: No outputs found"* ]]; then
+    echo "❌ Error: Terraform state has no outputs defined."
+    echo "   Make sure you have run 'terraform apply' in the infra directory."
+    exit 1
+fi
+
+# Also check if outputs are empty
 if [ -z "$SERVER_PUBLIC_IP" ] || [ -z "$APP_URL" ]; then
     echo "❌ Error: Could not retrieve all required Terraform outputs."
     echo "   Make sure you have run 'terraform apply' in the infra directory."
     exit 1
 fi
+
+APP_HOSTNAME=$(echo $APP_URL | sed 's|https://||')
 
 echo "✅ Retrieved configuration:"
 echo "   Web server: $SERVER_PUBLIC_IP"
@@ -38,7 +50,10 @@ echo "📝 Generating config/deploy.yml from template..."
 # Generate the deploy.yml file from template
 export SERVER_PUBLIC_IP APP_HOSTNAME
 envsubst < config/deploy.yml.tpl > config/deploy.yml
-
 echo "✅ Successfully generated config/deploy.yml"
+
+envsubst < config/loki.yml.tpl > config/loki.yml
+echo "✅ Successfully generated config/loki.yml"
+
 echo ""
 echo "🚀 You can now run: kamal deploy -c config/deploy.yml"

@@ -214,3 +214,22 @@ resource "cloudflare_record" "app_a" {
   ttl     = 1 # Auto TTL when proxied
   proxied = true
 }
+
+resource "cloudflare_record" "grafana_a" {
+  zone_id = data.cloudflare_zone.domain.id
+  name    = "grafana.${var.app_subdomain}"
+  type    = "A"
+  content = aws_instance.app_server.public_ip
+  ttl     = 300 # 5 minutes for DNS only
+  proxied = false # DNS only (gray cloud) for Let's Encrypt
+}
+
+resource "cloudflare_record" "prometheus_a" {
+  zone_id = data.cloudflare_zone.domain.id
+  name    = "prometheus.${var.app_subdomain}"
+  type    = "A"
+  content = aws_instance.app_server.public_ip
+  ttl     = 300 # 5 minutes for DNS only
+  proxied = false # DNS only (gray cloud) for Let's Encrypt
+}
+

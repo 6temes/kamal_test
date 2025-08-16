@@ -3,7 +3,8 @@
     "allow": [
       "Bash(kamal deploy:*)",
       "Bash(kamal accessory:*)",
-      "Bash(/Users/d.lopez/Code/kamal/kamal_test_pg/bin/generate-deploy-config:*)"
+      "Bash(/Users/d.lopez/Code/kamal/kamal_test_pg/bin/generate-deploy-config:*)",
+      "WebFetch(domain:kamal-deploy.org)"
     ],
     "deny": [],
     "ask": []

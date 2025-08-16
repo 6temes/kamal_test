@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Script to generate and set Prometheus basic auth credentials
+# Usage: ./bin/set-prometheus-auth [username] [password]
+
+USERNAME=${1:-admin}
+PASSWORD=${2}
+
+if [ -z "$PASSWORD" ]; then
+    echo "Usage: $0 [username] [password]"
+    echo "Example: $0 admin MySecurePassword123"
+    exit 1
+fi
+
+# Generate htpasswd hash
+HTPASSWD_ENTRY=$(echo -n "$USERNAME:" && echo "$PASSWORD" | openssl passwd -apr1 -stdin)
+
+echo "Generated htpasswd entry: $HTPASSWD_ENTRY"
+echo ""
+echo "To set this as an environment variable, run:"
+echo "export PROMETHEUS_BASIC_AUTH=\"$HTPASSWD_ENTRY\""
+echo ""
+echo "Or add to your .env file:"
+echo "PROMETHEUS_BASIC_AUTH=\"$HTPASSWD_ENTRY\""
