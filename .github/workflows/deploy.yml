@@ -31,6 +31,11 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
+          
+          # Clear any existing known_hosts entries for this server
+          ssh-keygen -R "[${{ secrets.SERVER_IP }}]:54022" 2>/dev/null || true
+          
+          # Add the current server fingerprint
           ssh-keyscan -p 54022 -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
       - name: Create .env file

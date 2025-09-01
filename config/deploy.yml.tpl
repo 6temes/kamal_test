@@ -2,7 +2,7 @@
 service: kamal_test
 
 # Name of the container image.
-image: ghcr.io/6temes/kamal_test
+image: 6temes/kamal_test
 
 # Deploy to these servers.
 servers:
