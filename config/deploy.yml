@@ -7,10 +7,10 @@ image: 6temes/kamal_test
 # Deploy to these servers.
 servers:
   web:
-    - 3.112.248.5
+    - 52.199.125.78
   job:
     hosts:
-      - 3.112.248.5
+      - 52.199.125.78
     cmd: bundle exec good_job start
 
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
@@ -96,7 +96,7 @@ ssh:
 accessories:
   db:
     image: postgres:17
-    host: 3.112.248.5
+    host: 52.199.125.78
     port: "127.0.0.1:5432:5432" # Allow TablePlus to connect using the port on the host.
     env:
       clear:
