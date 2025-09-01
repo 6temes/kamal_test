@@ -36,6 +36,7 @@ env:
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
+    - POSTGRES_USER
   clear:
     # GoodJob runs as a separate process on the job server
     # Set number of threads for GoodJob (default: 5)
@@ -47,7 +48,6 @@ env:
     # Database configuration for PostgreSQL
     DB_HOST: kamal_test-db
     DB_NAME: kamal_test_pg_production
-    DB_USER: kamal_test_pg
     DB_PORT: 5432
 
     # Log everything from Rails
@@ -101,8 +101,8 @@ accessories:
     env:
       clear:
         POSTGRES_DB: kamal_test_pg_production
-        POSTGRES_USER: kamal_test_pg
       secret:
+        - POSTGRES_USER
         - POSTGRES_PASSWORD
     directories:
       - data:/var/lib/postgresql/data
