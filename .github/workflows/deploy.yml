@@ -44,5 +44,5 @@ jobs:
         env:
           GHCR_PAT: ${{ secrets.GHCR_PAT }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          PRODUCTION_POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          PRODUCTION_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
