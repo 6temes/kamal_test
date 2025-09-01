@@ -7,10 +7,10 @@ image: ghcr.io/6temes/kamal_test
 # Deploy to these servers.
 servers:
   web:
-    - 43.207.1.157
+    - 3.112.248.5
   job:
     hosts:
-      - 43.207.1.157
+      - 3.112.248.5
     cmd: bundle exec good_job start
 
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
@@ -36,6 +36,7 @@ env:
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
+    - POSTGRES_USER
   clear:
     # GoodJob runs as a separate process on the job server
     # Set number of threads for GoodJob (default: 5)
@@ -47,7 +48,6 @@ env:
     # Database configuration for PostgreSQL
     DB_HOST: kamal_test-db
     DB_NAME: kamal_test_pg_production
-    DB_USER: kamal_test_pg
     DB_PORT: 5432
 
     # Log everything from Rails
@@ -96,13 +96,13 @@ ssh:
 accessories:
   db:
     image: postgres:17
-    host: 43.207.1.157
+    host: 3.112.248.5
     port: "127.0.0.1:5432:5432" # Allow TablePlus to connect using the port on the host.
     env:
       clear:
         POSTGRES_DB: kamal_test_pg_production
-        POSTGRES_USER: kamal_test_pg
       secret:
+        - POSTGRES_USER
         - POSTGRES_PASSWORD
     directories:
       - data:/var/lib/postgresql/data

@@ -4,7 +4,7 @@ The following secrets must be configured in your GitHub repository settings (Set
 
 ## Required Secrets
 
-1. **GITHUB_ACTIONS_DEPLOY_KEY**
+1. **DEPLOY_SSH_KEY**
    - The private SSH key for GitHub Actions deployment
    - Already generated and saved at: `~/.ssh/github_actions_deploy`
    - Copy the contents: `cat ~/.ssh/github_actions_deploy`
@@ -44,7 +44,7 @@ You can set these secrets using the GitHub CLI:
 gh auth login
 
 # Set secrets (replace with your actual values)
-gh secret set GITHUB_ACTIONS_DEPLOY_KEY < ~/.ssh/github_actions_deploy
+gh secret set DEPLOY_SSH_KEY < ~/.ssh/github_actions_deploy
 gh secret set SERVER_IP --body "YOUR_SERVER_IP"
 gh secret set GHCR_PAT --body "YOUR_GITHUB_PAT"
 gh secret set RAILS_MASTER_KEY < config/master.key
@@ -64,7 +64,7 @@ After setting up the secrets:
 
 ## Troubleshooting
 
-- If deployment fails with SSH errors, verify the GITHUB_ACTIONS_DEPLOY_KEY is correct
+- If deployment fails with SSH errors, verify the DEPLOY_SSH_KEY is correct
 - If registry authentication fails, ensure GHCR_PAT has the correct permissions
 - Check that SERVER_IP is correct and the server is accessible
 - Verify all environment variables match between local `.envrc` and GitHub secrets
