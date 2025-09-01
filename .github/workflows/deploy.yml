@@ -38,6 +38,11 @@ jobs:
           # Add the current server fingerprint
           ssh-keyscan -p 54022 -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
+      - name: Create master.key file
+        run: |
+          mkdir -p config
+          echo -n "${{ secrets.RAILS_MASTER_KEY }}" > config/master.key
+
       - name: Deploy with Kamal
         run: |
           kamal deploy
