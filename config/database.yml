@@ -92,7 +92,7 @@ production:
   primary: &primary_production
     <<: *default
     database: <%= ENV.fetch("DB_NAME", "kamal_test_pg_production") %>
-    username: <%= ENV.fetch("DB_USER", "kamal_test_pg") %>
+    username: <%= ENV.fetch("POSTGRES_USER", "kamal_test_pg") %>
     password: <%= ENV["POSTGRES_PASSWORD"] %>
     host: <%= ENV.fetch("DB_HOST", "localhost") %>
     port: <%= ENV.fetch("DB_PORT", 5432) %>
