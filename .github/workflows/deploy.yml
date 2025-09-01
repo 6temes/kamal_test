@@ -1,0 +1,52 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Install Kamal
+        run: gem install kamal
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.GITHUB_ACTIONS_DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p 54022 -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Create .env file
+        run: |
+          cat > .env << EOF
+          GHCR_PAT=${{ secrets.GHCR_PAT }}
+          RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
+          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          EOF
+
+      - name: Deploy with Kamal
+        run: |
+          kamal deploy
+        env:
+          GHCR_PAT: ${{ secrets.GHCR_PAT }}
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}

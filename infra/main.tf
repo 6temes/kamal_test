@@ -109,7 +109,10 @@ resource "aws_instance" "app_server" {
   vpc_security_group_ids = [aws_security_group.app_sg.id]
   subnet_id             = data.aws_subnets.default.ids[0]
 
-  user_data = file("${path.module}/cloud-init.yml")
+  user_data = templatefile("${path.module}/cloud-init.yml", {
+    ssh_public_key                = var.ssh_public_key
+    github_actions_ssh_public_key = var.github_actions_ssh_public_key
+  })
 
   # Enable detailed monitoring
   monitoring = var.enable_detailed_monitoring
