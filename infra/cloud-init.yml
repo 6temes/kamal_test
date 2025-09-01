@@ -13,6 +13,15 @@ packages:
   - ufw
   - wget
 
+users:
+  - name: admin
+    groups: sudo, docker
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ${ssh_public_key}
+      - ${github_actions_ssh_public_key}
+
 write_files:
   - path: /etc/ssh/sshd_config.d/99-custom.conf
     content: |

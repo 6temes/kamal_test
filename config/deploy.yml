@@ -7,10 +7,10 @@ image: ghcr.io/6temes/kamal_test
 # Deploy to these servers.
 servers:
   web:
-    - ${SERVER_PUBLIC_IP}
+    - 43.207.1.157
   job:
     hosts:
-      - ${SERVER_PUBLIC_IP}
+      - 43.207.1.157
     cmd: bundle exec good_job start
 
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
@@ -19,7 +19,7 @@ servers:
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
 proxy:
   ssl: true
-  host: ${APP_HOSTNAME}
+  host: kamal-test.6temes.net
 
 # Credentials for your image host.
 registry:
@@ -96,7 +96,7 @@ ssh:
 accessories:
   db:
     image: postgres:17
-    host: ${SERVER_PUBLIC_IP}
+    host: 43.207.1.157
     port: "127.0.0.1:5432:5432" # Allow TablePlus to connect using the port on the host.
     env:
       clear:

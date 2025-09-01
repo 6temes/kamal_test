@@ -21,6 +21,12 @@ variable "ssh_public_key" {
   type        = string
 }
 
+variable "github_actions_ssh_public_key" {
+  description = "SSH public key for GitHub Actions deployment"
+  type        = string
+  default     = ""
+}
+
 variable "ssh_private_key_path" {
   description = "Path to SSH private key file for provisioning"
   type        = string
